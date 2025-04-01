@@ -15,25 +15,40 @@ jobs:
         - name: Generate  ASCII Artwork
           run: cowsay -f dragon "Run for Cover, I am a DRAGON ....." >> dragon.txt
 
-        - name: sleep for 20 seconds
-          run: sleep 20       
+        - name: Upload an artifact 
+          uses: actions/upload-artifact@v4
+          with:
+            # Name of the artifact to upload.
+            # Optional. Default is 'artifact'
+            name: dragon-text-file           
+            # A file, directory or wildcard pattern that describes what to upload
+            # Required.
+            path: dragon.txt
 
     test_job2:
         needs: build_job1
         runs-on: ubuntu-latest
         steps:
-        - name: sleep for 10 seconds
-          run: sleep 10
-
+        - name: Download an artifact 
+          uses: actions/download-artifact@v4
+          with:
+            # Name of the artifact to download.
+            # Optional. Default is 'artifact'
+            name: dragon-text-file         
+            
         - name: Test file exists
           run: grep -i "dragon" dragon.txt       
 
     deploy_job3:
         needs: test_job2
         runs-on: ubuntu-latest
-        steps:
-        - name: Checkout Repo
-          uses: actions/checkout@v4  
+        steps:     
+        - name: Download an artifact 
+          uses: actions/download-artifact@v4
+          with:
+           # Name of the artifact to download.
+           # Optional. Default is 'artifact'
+           name: dragon-text-file  
 
         - name: Read file
           run: cat dragon.txt
