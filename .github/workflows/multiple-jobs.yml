@@ -4,6 +4,9 @@ on: push
 
 jobs: 
     build_job1:
+        #needs: test_job2
+        # do not include same job in the needs section, because it will creates a cycle in the dependency graph. 
+        # we also need to run workflow at least one job with no dependencies. 
         runs-on: ubuntu-latest
         steps:      
         - name: install cowsay program
@@ -16,6 +19,7 @@ jobs:
           run: sleep 20       
 
     test_job2:
+        needs: build_job1
         runs-on: ubuntu-latest
         steps:
         - name: sleep for 10 seconds
@@ -25,6 +29,7 @@ jobs:
           run: grep -i "dragon" dragon.txt       
 
     deploy_job3:
+        needs: test_job2
         runs-on: ubuntu-latest
         steps:
         - name: Checkout Repo
