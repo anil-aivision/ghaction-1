@@ -8,12 +8,22 @@ jobs:
         steps:
         - name: Checkout Repo
           uses: actions/checkout@v4
+        
+        - name: Multi step
+          run: |
+            echo 'My first github actions in step1'
+            ls -ltra
+            cat README.md
+        
+        - name: Generate  ASCII Artwork
+          run: cowsay -f dragon "Run for Cover, I am a DRAGON ....." >> dragon.txt
+        # cowsay is third party command to generate ASCII charactors.
           
-        - name: welcome message
-          run: echo 'My first github actions in step1'
+        # - name: welcome message
+        #   run: echo 'My first github actions in step1'
 
-        - name: List files
-          run: ls 
+        # - name: List files
+        #   run: ls 
 
-        - name: Read file
-          run: cat README.md
+        # - name: Read file
+        #   run: cat README.md
